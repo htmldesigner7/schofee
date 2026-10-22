@@ -137,15 +137,6 @@
     });
   }
 
-  /* ---------- Newsletter ---------- */
-  var nl = document.getElementById('newsletter-form');
-  if (nl) nl.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var i = nl.querySelector('input'), m = nl.querySelector('.nl-msg');
-    if (!i.checkValidity()) { m.textContent = 'Please enter a valid email address.'; i.focus(); return; }
-    m.textContent = 'Thank you! You are subscribed.'; nl.reset();
-  });
-
   /* ---------- Contact form ---------- */
   var cf = document.getElementById('contact-form');
   if (cf) {
@@ -187,6 +178,100 @@
       msg.textContent = 'Thank you! Your enquiry has been received. Our team will get in touch with you shortly.';
       cf.reset(); syncInst();
     });
+  }
+
+  /* ---------- Partner questionnaire modal (For Schools) ---------- */
+  var pm = document.getElementById('partner-modal');
+  if (pm && typeof pm.showModal === 'function') {
+    var pf = document.getElementById('partner-form'), done = pm.querySelector('.modal__done'), pmsg = pf.querySelector('.form-msg');
+    var openPm = function (e) {
+      if (e) e.preventDefault();
+      pf.hidden = false; done.hidden = true;
+      pm.showModal(); document.body.classList.add('modal-open');
+    };
+    var closePm = function () { if (pm.open) pm.close(); };
+    [].slice.call(document.querySelectorAll('[data-open-partner]')).forEach(function (b) { b.addEventListener('click', openPm); });
+    [].slice.call(pm.querySelectorAll('[data-close-partner]')).forEach(function (b) { b.addEventListener('click', closePm); });
+    pm.addEventListener('close', function () { document.body.classList.remove('modal-open'); });
+    pm.addEventListener('click', function (e) { if (e.target === pm) closePm(); });
+
+    var setErr = function (box, msg) {
+      box.classList.toggle('has-error', !!msg);
+      var err = box.querySelector('.err'); if (err) err.textContent = msg || '';
+    };
+    pf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var first = null, ok = true;
+      var mark = function (box, el, msg) { setErr(box, msg); if (msg) { ok = false; if (!first) first = el; } };
+      [['pf-institution', function (v) { return v.trim().length >= 2; }, 'Please enter your institution name.'],
+       ['pf-students', function (v) { return v !== ''; }, 'Please select an option.'],
+       ['pf-name', function (v) { return v.trim().length >= 2; }, 'Please enter your name.'],
+       ['pf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid phone number.'],
+       ['pf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.']
+      ].forEach(function (r) {
+        var el = document.getElementById(r[0]), good = r[1](el.value);
+        mark(el.closest('.field'), el, good ? '' : r[2]);
+        el.setAttribute('aria-invalid', !good);
+      });
+      [].slice.call(pf.querySelectorAll('fieldset[data-required]')).forEach(function (fs) {
+        mark(fs, fs.querySelector('input'), fs.querySelector('input:checked') ? '' : 'Please choose one option.');
+      });
+      if (!ok) { pmsg.className = 'form-msg bad'; pmsg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
+      pmsg.className = 'form-msg'; pmsg.textContent = '';
+      pf.reset(); pf.hidden = true; done.hidden = false; pm.querySelector('.modal__box').scrollTop = 0;
+      done.querySelector('.btn').focus();
+    });
+    pf.addEventListener('input', function (e) {
+      var box = e.target.closest('.field'); if (box && box.classList.contains('has-error')) setErr(box, '');
+    });
+  }
+
+  /* ---------- Reviews auto slider ---------- */
+  var rs = document.querySelector('.reviews-slider');
+  if (rs) {
+    var track = rs.querySelector('.reviews'), dotsBox = rs.querySelector('.reviews__dots');
+    var slides = [].slice.call(track.children), n = slides.length, idx = 0, timer = null, paused = false;
+    var perView = function () { return window.innerWidth >= 1024 ? 3 : 1; };
+    var pp = perView();
+    // clones of the first slides so the loop never shows a gap
+    slides.slice(0, 3).forEach(function (s) { var c = s.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.setAttribute('data-clone', ''); track.appendChild(c); });
+    rs.classList.add('is-ready');
+    var dots = slides.map(function (s, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Show review ' + (i + 1));
+      b.addEventListener('click', function () { go(i); restart(); }); dotsBox.appendChild(b); return b;
+    });
+    var step = function () { var all = track.children; return all.length > 1 ? all[1].offsetLeft - all[0].offsetLeft : 0; };
+    var render = function (jump) {
+      track.classList.toggle('is-jump', !!jump);
+      track.style.transform = 'translateX(' + (-idx * step()) + 'px)';
+      dots.forEach(function (d, i) { d.setAttribute('aria-current', i === idx % n); });
+    };
+    var go = function (i) { idx = i; render(false); };
+    var next = function () {
+      idx += 1; render(false);
+      if (idx >= n) { // landed on the clone of slide 0: jump back silently
+        setTimeout(function () { if (idx < n) return; idx = 0; render(true); void track.offsetWidth; track.classList.remove('is-jump'); }, 720);
+      }
+    };
+    var tick = function () { if (!paused && !document.hidden) next(); };
+    var restart = function () { clearInterval(timer); if (!reduce) timer = setInterval(tick, 5000); };
+    rs.addEventListener('mouseenter', function () { paused = true; });
+    rs.addEventListener('mouseleave', function () { paused = false; });
+    rs.addEventListener('focusin', function () { paused = true; });
+    rs.addEventListener('focusout', function () { paused = false; });
+    window.addEventListener('resize', function () {
+      var p = perView(); if (p !== pp) { pp = p; rs.style.setProperty('--pp', p); }
+      render(true); void track.offsetWidth; track.classList.remove('is-jump');
+    });
+    // swipe
+    var sx = null;
+    rs.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') sx = e.clientX; });
+    rs.addEventListener('pointerup', function (e) {
+      if (sx === null) return; var d = e.clientX - sx; sx = null;
+      if (Math.abs(d) > 40) { go(d < 0 ? (idx + 1) % n : (idx - 1 + n) % n); restart(); }
+    });
+    render(true); void track.offsetWidth; track.classList.remove('is-jump');
+    restart();
   }
 
   /* ---------- Footer year ---------- */
