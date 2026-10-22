@@ -5,7 +5,7 @@
 
   /* ---------- WhatsApp floating button ---------- */
   /* Replace with your number: country code + number, digits only (e.g. 919876543210) */
-  var WHATSAPP_NUMBER = '910000000000';
+  var WHATSAPP_NUMBER = '919824909700';
   var wa = document.createElement('a');
   wa.className = 'whatsapp-float';
   wa.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hi schofee, I would like to know more about school fee financing.');
@@ -180,7 +180,7 @@
     });
   }
 
-  /* ---------- Partner questionnaire modal (For Schools) ---------- */
+  /* ---------- Partner modal (For Schools, Partnership Models) ---------- */
   var pm = document.getElementById('partner-modal');
   if (pm && typeof pm.showModal === 'function') {
     var pf = document.getElementById('partner-form'), done = pm.querySelector('.modal__done'), pmsg = pf.querySelector('.form-msg');
@@ -203,11 +203,11 @@
       e.preventDefault();
       var first = null, ok = true;
       var mark = function (box, el, msg) { setErr(box, msg); if (msg) { ok = false; if (!first) first = el; } };
-      [['pf-institution', function (v) { return v.trim().length >= 2; }, 'Please enter your institution name.'],
-       ['pf-students', function (v) { return v !== ''; }, 'Please select an option.'],
-       ['pf-name', function (v) { return v.trim().length >= 2; }, 'Please enter your name.'],
-       ['pf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid phone number.'],
-       ['pf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.']
+      [['pf-name', function (v) { return v.trim().length >= 2; }, 'Please enter the contact person name.'],
+       ['pf-institution', function (v) { return v.trim().length >= 2; }, 'Please enter your institution name.'],
+       ['pf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
+       ['pf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid mobile number.'],
+       ['pf-city', function (v) { return v.trim().length >= 2; }, 'Please enter your city.']
       ].forEach(function (r) {
         var el = document.getElementById(r[0]), good = r[1](el.value);
         mark(el.closest('.field'), el, good ? '' : r[2]);
@@ -224,6 +224,63 @@
     pf.addEventListener('input', function (e) {
       var box = e.target.closest('.field'); if (box && box.classList.contains('has-error')) setErr(box, '');
     });
+  }
+
+  /* ---------- Lending partner modal (Contact Us) ---------- */
+  var lm = document.getElementById('lender-modal');
+  if (lm && typeof lm.showModal === 'function') {
+    var lf = document.getElementById('lender-form'), ldone = lm.querySelector('.modal__done'), lmsg = lf.querySelector('.form-msg');
+    var openLm = function (e) {
+      if (e) e.preventDefault();
+      lf.hidden = false; ldone.hidden = true;
+      lm.showModal(); document.body.classList.add('modal-open');
+    };
+    var closeLm = function () { if (lm.open) lm.close(); };
+    [].slice.call(document.querySelectorAll('[data-open-lender]')).forEach(function (b) { b.addEventListener('click', openLm); });
+    [].slice.call(lm.querySelectorAll('[data-close-lender]')).forEach(function (b) { b.addEventListener('click', closeLm); });
+    lm.addEventListener('close', function () { document.body.classList.remove('modal-open'); });
+    lm.addEventListener('click', function (e) { if (e.target === lm) closeLm(); });
+
+    var setLErr = function (box, msg) {
+      box.classList.toggle('has-error', !!msg);
+      var err = box.querySelector('.err'); if (err) err.textContent = msg || '';
+    };
+    lf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var first = null, ok = true;
+      [['lf-name', function (v) { return v.trim().length >= 2; }, 'Please enter the contact person name.'],
+       ['lf-company', function (v) { return v.trim().length >= 2; }, 'Please enter your NBFC / company name.'],
+       ['lf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
+       ['lf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid mobile number.'],
+       ['lf-city', function (v) { return v.trim().length >= 2; }, 'Please enter your city.']
+      ].forEach(function (r) {
+        var el = document.getElementById(r[0]), good = r[1](el.value);
+        setLErr(el.closest('.field'), good ? '' : r[2]);
+        el.setAttribute('aria-invalid', !good);
+        if (!good) { ok = false; if (!first) first = el; }
+      });
+      if (!ok) { lmsg.className = 'form-msg bad'; lmsg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
+      lmsg.className = 'form-msg'; lmsg.textContent = '';
+      lf.reset(); lf.hidden = true; ldone.hidden = false; lm.querySelector('.modal__box').scrollTop = 0;
+      ldone.querySelector('.btn').focus();
+    });
+    lf.addEventListener('input', function (e) {
+      var box = e.target.closest('.field'); if (box && box.classList.contains('has-error')) setLErr(box, '');
+    });
+  }
+
+  /* ---------- Policy pages: collapsible "On this page" on small screens ---------- */
+  var tocBox = document.querySelector('.policy__toc details');
+  if (tocBox && window.matchMedia) {
+    var tocMq = window.matchMedia('(max-width: 980px)');
+    var syncToc = function () { tocBox.open = !tocMq.matches; };
+    syncToc();
+    if (tocMq.addEventListener) tocMq.addEventListener('change', syncToc);
+    [].slice.call(tocBox.querySelectorAll('a')).forEach(function (a) {
+      a.addEventListener('click', function () { if (tocMq.matches) tocBox.open = false; });
+    });
+    // on desktop the list is always visible; stop the summary from collapsing it
+    tocBox.querySelector('summary').addEventListener('click', function (e) { if (!tocMq.matches) e.preventDefault(); });
   }
 
   /* ---------- Reviews auto slider ---------- */

@@ -38,6 +38,9 @@
    "alternateName": "schofee by Credorbit",
    "url": "https://www.schofee.com/",
    "logo": "https://www.schofee.com/images/schofee-logo.png",
+   "email": "info@schofee.com",
+   "telephone": "+919824909700",
+   "contactPoint": {"@type": "ContactPoint", "telephone": "+919824909700", "email": "info@schofee.com", "contactType": "customer support", "areaServed": "IN", "availableLanguage": ["en", "hi"]},
    "description": "Digital education fee financing platform connecting institutions, parents and lending partners."
   },
   {
@@ -155,11 +158,11 @@
         <li><a href="for-parents.html">For Parents</a></li>
         <li><a href="how-it-works.html">How It Works</a></li>
         <li><a href="for-schools.html">For Schools</a></li>
-        <li><a href="blog.html">Blog</a></li>
+        <li><a href="blog.html">Blogs</a></li>
         <li><a href="contact-us.html">Contact Us</a></li>
       </ul>
     </nav>
-    <a href="javascript:void(0)" class="btn btn--solid header-cta">Login</a>
+
     <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -172,7 +175,7 @@
       <span class="tag">Partner With Us</span>
       <h1 id="page-title">Flexible Education Fee Financing Models</h1>
       <div><p class="intro">Different educational institutions have different objectives. Schofee offers partnership structures that can be aligned with an institution&rsquo;s approach to affordability and fee realization.</p></div>
-      <div class="btn-row"><a href="#models" class="btn btn--ghost">Compare Models <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><a href="contact-us.html" class="btn btn--ghost">Discuss Your Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      <div class="btn-row"><a href="#models" class="btn btn--ghost">Compare Models <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><a href="#partner-modal" class="btn btn--ghost" data-open-partner>Discuss Your Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
     </div>
     <div class="hero-visual">
       <div class="ring" aria-hidden="true"></div>
@@ -193,7 +196,7 @@
           <div><h4>Best Suited For</h4><p class="muted">Institutions focused on:</p><ul class="checklist " data-stagger=".07"><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Improving affordability</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Supporting admissions</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Offering No-Cost EMI options</span></li></ul></div>
           <div><h4>Benefits</h4><ul class="checklist " data-stagger=".07"><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>No-Cost EMI experience for students</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Reduced upfront payment pressure</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Potentially improved admission conversion</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Upfront settlement to the institution after applicable discounting</span></li></ul></div>
         </div>
-        <div class="model__foot"><a href="contact-us.html" class="btn btn--solid">Discuss This Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+        <div class="model__foot"><a href="#partner-modal" class="btn btn--solid" data-open-partner>Discuss This Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
       </article>
       <article class="model" data-reveal="right">
         <div class="model__head"><span class="model__label">Model B</span><h3>Low-Cost EMI</h3><p>Under this model, the student bears the applicable financing cost while the institution receives the applicable full fee settlement without discounting.</p></div>
@@ -201,7 +204,7 @@
           <div><h4>Best Suited For</h4><p class="muted">Institutions focused on:</p><ul class="checklist " data-stagger=".07"><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Full fee realization</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Maintaining institutional revenue</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Offering financing flexibility to parents</span></li></ul></div>
           <div><h4>Benefits</h4><ul class="checklist " data-stagger=".07"><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Full fee settlement to institution</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>No institutional discounting</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Flexible EMI option for students</span></li><li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Reduced fee collection dependency</span></li></ul></div>
         </div>
-        <div class="model__foot"><a href="contact-us.html" class="btn btn--solid">Discuss This Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+        <div class="model__foot"><a href="#partner-modal" class="btn btn--solid" data-open-partner>Discuss This Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
       </article>
     </div>
   </div>
@@ -222,7 +225,7 @@
   <div class="container" data-reveal="zoom">
     <h2 id="cta-title">Discuss Your<br>Partnership Model</h2>
     <p>Talk to our team about the structure that best fits your fee structure, student profile and admission goals.</p>
-    <div class="btn-row"><a href="contact-us.html" class="btn btn--ghost">Discuss Your Partnership Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    <div class="btn-row"><a href="#partner-modal" class="btn btn--ghost" data-open-partner>Discuss Your Partnership Model <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
   </div>
 </section>
 </main>
@@ -233,30 +236,67 @@
       <div class="footer__brand" data-reveal>
         <a href="index.html" aria-label="schofee home"><img src="images/schofee-logo.png" width="222" height="60" loading="lazy" alt="schofee by Credorbit"></a>
         <p>Empowering educational institutions with a seamless digital fee financing platform that improves admissions, accelerates fee collection, and delivers flexible EMI solutions for parents.</p>
+        <ul class="footer__contact">
+          <li><svg aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:info@schofee.com" target="_blank" rel="noopener">info@schofee.com</a></li>
+          <li><svg aria-hidden="true"><use href="#i-headset"/></svg><a href="tel:+919824909700" target="_blank" rel="noopener">+91 98249 09700</a></li>
+        </ul>
         <div class="social">
-          <a href="https://www.schofee.com/" aria-label="schofee on Facebook" rel="noopener" target="_blank"><svg><use href="#i-fb"/></svg></a>
-          <a href="https://www.schofee.com/" aria-label="schofee on Instagram" rel="noopener" target="_blank"><svg><use href="#i-ig"/></svg></a>
-          <a href="https://www.schofee.com/" aria-label="schofee on LinkedIn" rel="noopener" target="_blank"><svg><use href="#i-in"/></svg></a>
+          <a href="javascript:void(0)" aria-label="schofee on Facebook"><svg><use href="#i-fb"/></svg></a>
+          <a href="https://www.instagram.com/schofee_by_credorbit?srtk=MTh5ajZkMDIzaDg3NA==" aria-label="schofee on Instagram" rel="noopener" target="_blank"><svg><use href="#i-ig"/></svg></a>
+          <a href="javascript:void(0)" aria-label="schofee on LinkedIn"><svg><use href="#i-in"/></svg></a>
         </div>
       </div>
       <nav aria-labelledby="footer-links" data-reveal style="--d:.1s">
         <h2 id="footer-links">Links</h2>
         <div class="footer__links">
           <div><a href="index.html">Home</a><a href="about-us.html">About Us</a><a href="for-schools.html">For Schools</a><a href="for-parents.html">For Parents</a></div>
-          <div><a href="how-it-works.html">How It Works</a><a href="partnership-models.html">Partner With Us</a><a href="blog.html">Blog</a><a href="contact-us.html">Contact Us</a><a href="how-it-works.html#faq">FAQs</a></div>
-          <div><a href="privacy-policy.html">Privacy Policy</a><a href="terms-and-conditions.html">Terms &amp; Conditions</a><a href="cookie-policy.html">Cookie Policy</a><a href="disclosure.html">Disclosure</a></div>
+          <div><a href="how-it-works.html">How It Works</a><a href="partnership-models.html">Partner With Us</a><a href="blog.html">Blogs</a><a href="contact-us.html">Contact Us</a><a href="how-it-works.html#faq">FAQs</a></div>
+          <div><a href="privacy-policy.html">Privacy Policy</a><a href="terms-and-conditions.html">Terms &amp; Conditions</a><a href="cookie-policy.html">Cookie Policy</a><a href="disclosure.html">Disclosure</a><a href="https://sachet.rbi.org.in/sachet/home" target="_blank" rel="noopener">RBI Sachet</a></div>
         </div>
       </nav>
-    </div>
-    <div class="footer__rbi" aria-label="RBI links">
-      <span>Regulatory Links:</span>
-      <a href="https://www.rbi.org.in/" target="_blank" rel="noopener">Reserve Bank of India</a>
-      <a href="https://sachet.rbi.org.in/" target="_blank" rel="noopener">RBI Sachet</a>
-      <a href="https://cms.rbi.org.in/" target="_blank" rel="noopener">RBI Complaint Management System</a>
     </div>
     <div class="footer__bottom">&copy; <span id="yr">2026</span> schofee. All Rights Reserved.</div>
   </div>
 </footer>
+
+<dialog class="modal" id="partner-modal" aria-labelledby="pm-title">
+  <div class="modal__box">
+    <button type="button" class="modal__close" data-close-partner aria-label="Close form"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <form class="form modal__form" id="partner-form" novalidate>
+      <h2 id="pm-title">Partner with Us &mdash; Educational Institution</h2>
+      <p>Please fill in the details below. Fields marked <span class="req" style="color:#d9534f">*</span> are required.</p>
+      <div class="fgrid">
+        <div class="field"><label for="pf-name">Contact Person Name <span class="req">*</span></label><input id="pf-name" name="name" type="text" autocomplete="name" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="pf-institution">Institution Name <span class="req">*</span></label><input id="pf-institution" name="institution" type="text" autocomplete="organization" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="pf-email">Official Email Address <span class="req">*</span></label><input id="pf-email" name="email" type="email" autocomplete="email" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="pf-phone">Mobile Number <span class="req">*</span></label><input id="pf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" aria-live="polite"></span></div>
+        <div class="field field--full"><label for="pf-city">City <span class="req">*</span></label><input id="pf-city" name="city" type="text" autocomplete="address-level2" required><span class="err" aria-live="polite"></span></div>
+        <fieldset class="field field--full" data-required><legend>Number of Students <span class="req">*</span></legend>
+          <div class="radios">
+            <label class="radio"><input type="radio" name="students" value="Below 50"><span>Below 50</span></label>
+            <label class="radio"><input type="radio" name="students" value="50-200"><span>50&ndash;200</span></label>
+            <label class="radio"><input type="radio" name="students" value="Above 200"><span>Above 200</span></label>
+          </div><span class="err" aria-live="polite"></span>
+        </fieldset>
+        <fieldset class="field field--full" data-required><legend>Existing Fee Collection Method <span class="req">*</span></legend>
+          <div class="radios">
+            <label class="radio"><input type="radio" name="collection" value="Full Payment"><span>Full Payment</span></label>
+            <label class="radio"><input type="radio" name="collection" value="Installments"><span>Installments</span></label>
+            <label class="radio"><input type="radio" name="collection" value="Both"><span>Both</span></label>
+          </div><span class="err" aria-live="polite"></span>
+        </fieldset>
+      </div>
+      <button type="submit" class="btn btn--solid">Submit Partnership Inquiry <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+    <div class="modal__done" hidden>
+      <span class="modal__tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <h2>Thank you!</h2>
+      <p>Your partnership inquiry has been received. Our team will get in touch with you shortly.</p>
+      <button type="button" class="btn btn--solid" data-close-partner>Close</button>
+    </div>
+  </div>
+</dialog>
 
 <script src="assets/js/main.js" defer></script>
 </body>

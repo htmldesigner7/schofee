@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Parents, a lending partner and a school connected by a fee payment flow">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0e7fc0"/><stop offset="1" stop-color="#0a4f82"/></linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf8ff"/><stop offset="1" stop-color="#bfe6f9"/></linearGradient>
+    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd35c"/><stop offset="1" stop-color="#f0a500"/></linearGradient>
+    <linearGradient id="bl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ea3e0"/><stop offset="1" stop-color="#0d6aa3"/></linearGradient>
+    <filter id="sd" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#04233f" flood-opacity=".3"/></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1100" cy="60" r="220" fill="#fff" opacity=".07"/>
+  <circle cx="70" cy="610" r="260" fill="#fff" opacity=".06"/>
+  <path d="M250 300 C 420 170, 780 170, 950 300" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="3" stroke-dasharray="6 12"/>
+
+  <!-- parents card -->
+  <g filter="url(#sd)"><rect x="60" y="190" width="300" height="290" rx="26" fill="url(#sky)"/></g>
+  <circle cx="165" cy="285" r="34" fill="#1287c9"/><path d="M110 395 c0 -40 25 -62 55 -62 s55 22 55 62 Z" fill="#1287c9"/>
+  <circle cx="250" cy="305" r="25" fill="#f5b301"/><path d="M212 395 c0 -30 17 -48 38 -48 s38 18 38 48 Z" fill="#f5b301"/>
+  <rect x="100" y="414" width="220" height="36" rx="18" fill="#fff"/>
+  <text x="210" y="439" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="19" font-weight="700" fill="#0a4f82">Parents</text>
+
+  <!-- lender -->
+  <g filter="url(#sd)"><rect x="450" y="150" width="300" height="330" rx="26" fill="#fff"/></g>
+  <rect x="450" y="150" width="300" height="70" rx="26" fill="url(#bl)"/><rect x="450" y="195" width="300" height="25" fill="url(#bl)"/>
+  <text x="600" y="197" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="24" font-weight="700" fill="#fff">Lending partner</text>
+  <path d="M510 335 L600 275 L690 335 Z" fill="#0d6aa3"/>
+  <rect x="525" y="338" width="150" height="10" fill="#0d6aa3"/>
+  <g fill="#1287c9"><rect x="532" y="352" width="22" height="60" rx="4"/><rect x="574" y="352" width="22" height="60" rx="4"/><rect x="616" y="352" width="22" height="60" rx="4"/><rect x="658" y="352" width="14" height="60" rx="4"/></g>
+  <rect x="515" y="414" width="170" height="16" rx="8" fill="#0d6aa3"/>
+  <rect x="505" y="440" width="190" height="14" rx="7" fill="#e1eef6"/><rect x="505" y="440" width="120" height="14" rx="7" fill="url(#bl)"/>
+
+  <!-- school -->
+  <g filter="url(#sd)"><rect x="840" y="190" width="300" height="290" rx="26" fill="url(#sky)"/></g>
+  <path d="M870 335 L990 270 L1110 335 Z" fill="#0d6aa3"/>
+  <rect x="888" y="335" width="204" height="100" fill="#fff"/><rect x="888" y="335" width="204" height="8" fill="#cfe4f1"/>
+  <rect x="964" y="382" width="52" height="53" rx="6" fill="#1287c9"/>
+  <g fill="#9bd0ee"><rect x="906" y="360" width="44" height="34" rx="5"/><rect x="1030" y="360" width="44" height="34" rx="5"/></g>
+  <rect x="988" y="226" width="4" height="36" fill="#0a4f82"/><path d="M992 226 h34 l-9 11 l9 11 h-34 Z" fill="#f5b301"/>
+  <rect x="880" y="446" width="220" height="30" rx="15" fill="#fff"/>
+  <text x="990" y="468" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="18" font-weight="700" fill="#0a4f82">School</text>
+
+  <!-- flow coins -->
+  <g filter="url(#sd)">
+    <circle cx="405" cy="335" r="30" fill="url(#gd)"/><circle cx="795" cy="335" r="30" fill="url(#gd)"/>
+  </g>
+  <text x="405" y="346" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#fff">₹</text>
+  <text x="795" y="346" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#fff">₹</text>
+  <g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"><path d="M365 335 h-4"/><path d="M752 335 h-4"/></g>
+
+  <!-- caption pill -->
+  <g filter="url(#sd)"><rect x="380" y="530" width="440" height="56" rx="28" fill="#fff"/></g>
+  <text x="600" y="565" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="22" font-weight="700" fill="#0a4f82">Pay school fees over time</text>
+</svg>
