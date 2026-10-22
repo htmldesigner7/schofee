@@ -1000,3 +1000,54 @@ body.modal-open{overflow:hidden}
 @media(max-width:700px){.post-inline-cta{flex-direction:column;align-items:flex-start}}
 .post-body .policy__table table{min-width:0}
 .post-body .policy__table[aria-label*="Comparison of school fee"] table{min-width:760px}
+
+/* Blog article: single column on tablet/mobile (must come after the desktop overrides above) */
+@media(max-width:1020px){
+  .post-layout{grid-template-columns:minmax(0,1fr);gap:28px}
+  .post-aside{position:static;max-height:none;overflow:visible;order:-1}
+  .post-aside .post-side-card{display:none}
+  .post-body{max-width:none;min-width:0}
+}
+@media(max-width:560px){
+  .post{padding-top:24px}
+  .post-cover{border-radius:14px;margin-bottom:28px}
+  .post-hero h1{font-size:clamp(26px,7.4vw,34px)}
+  .post-meta li{font-size:13px;padding:7px 14px}
+  .post-lead{font-size:18px!important}
+  .post-body p{font-size:16px;line-height:1.75}
+  .post-sec{padding-top:24px;margin-top:14px}
+  .post-sec h2{font-size:23px}
+  .post-sec h3{font-size:17.5px}
+  .post-note{padding:16px;gap:12px}
+  .post-checks li{padding:12px 14px 12px 46px;font-size:15.5px}
+  .post-checks li::before{left:14px;top:16px}
+  .post-cta{padding:26px 20px}
+  .post-cta .btn-row{flex-direction:column;align-items:stretch;gap:12px}
+  .post-cta .btn-row .btn{justify-content:center}
+  .post-inline-cta .btn{width:100%;justify-content:center}
+  .post-body .policy__table{margin-left:-2px;margin-right:-2px}
+  .post-related__grid{margin-top:28px}
+}
+
+/* Tables become stacked cards on phones (no sideways scrolling) */
+@media(max-width:640px){
+  .policy__table{border:0;overflow:visible;border-radius:0}
+  .policy__table table,.post-body .policy__table table,.post-body .policy__table[aria-label*="Comparison"] table{min-width:0!important;display:block;font-size:15px}
+  .policy__table thead{display:none}
+  .policy__table tbody{display:flex;flex-direction:column;gap:14px}
+  .policy__table tr{display:block;border:1px solid #d7eaf5;border-radius:12px;background:#fff;overflow:hidden}
+  .policy__table tbody th{display:block;white-space:normal;background:#f4faff;padding:12px 16px;border-bottom:1px solid #dcebf4;font-size:15.5px;color:var(--ink)}
+  .policy__table td{display:block;padding:10px 16px;border-bottom:1px solid #eef5fa}
+  .policy__table td::before{content:attr(data-label);display:block;margin-bottom:2px;font-size:11.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--blue)}
+  .policy__table tr > :last-child{border-bottom:0}
+  .post-body .policy__table{margin-left:0;margin-right:0}
+}
+
+/* Blog covers are 1200x630: keep that ratio so nothing is cropped */
+.post-card .post__img,.post__img--cover{aspect-ratio:1200/630}
+.post__img--cover img,.post-card .post__img img{object-fit:cover}
+
+/* For Parents "Why Choose Schofee": keep text and image close on wide screens */
+@media(min-width:1024px){
+  .split--tight{max-width:1180px;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,4vw,64px)}
+}

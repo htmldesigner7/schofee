@@ -6,6 +6,21 @@
   /* ---------- WhatsApp floating button ---------- */
   /* Replace with your number: country code + number, digits only (e.g. 919876543210) */
   var WHATSAPP_NUMBER = '919824909700';
+
+  /* Form enquiries: open WhatsApp in a new tab with the submitted details pre-filled.
+     Called only after a form passes validation. fields = [[inputName, label], ...] */
+  var sendToWhatsApp = function (title, form, fields) {
+    try {
+      /* WhatsApp formatting: *bold* for headings and labels, one detail per line */
+      var lines = ['*New Enquiry from schofee.com*', '', '*Form:* ' + title, '--------------------'];
+      fields.forEach(function (f) {
+        var el = form.elements[f[0]], v = el ? String(el.value || '').trim() : '';
+        if (v) lines.push('*' + f[1] + ':* ' + v.replace(/\s*\n\s*/g, ' '));
+      });
+      lines.push('--------------------', '_Sent via schofee.com_');
+      window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+    } catch (err) { /* never block the form's own success message */ }
+  };
   var wa = document.createElement('a');
   wa.className = 'whatsapp-float';
   wa.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hi schofee, I would like to know more about school fee financing.');
@@ -129,7 +144,7 @@
         var f = t.getAttribute('data-filter');
         tabs.forEach(function (o) { o.setAttribute('aria-selected', o === t); });
         cards.forEach(function (c, i) {
-          var show = f === 'all' || c.getAttribute('data-cat') === f;
+          var show = f === 'all' || (' ' + c.getAttribute('data-cat') + ' ').indexOf(' ' + f + ' ') > -1;
           c.classList.toggle('is-hidden', !show);
           if (show && !reduce) { c.style.animation = 'none'; void c.offsetWidth; c.style.animation = 'heroIn .6s ' + (i % 3) * 0.08 + 's both'; }
         });
@@ -176,6 +191,7 @@
       if (!ok) { msg.className = 'form-msg bad'; msg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
       msg.className = 'form-msg ok';
       msg.textContent = 'Thank you! Your enquiry has been received. Our team will get in touch with you shortly.';
+      sendToWhatsApp('Contact Enquiry', cf, [['name', 'Name'], ['email', 'Email'], ['phone', 'Phone'], ['city', 'City'], ['role', 'I am a'], ['institution', 'Institution'], ['message', 'Message']]);
       cf.reset(); syncInst();
     });
   }
@@ -218,6 +234,7 @@
       });
       if (!ok) { pmsg.className = 'form-msg bad'; pmsg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
       pmsg.className = 'form-msg'; pmsg.textContent = '';
+      sendToWhatsApp('Educational Institution', pf, [['name', 'Contact person'], ['institution', 'Institution'], ['email', 'Email'], ['phone', 'Mobile'], ['city', 'City'], ['students', 'Number of students'], ['collection', 'Existing fee collection']]);
       pf.reset(); pf.hidden = true; done.hidden = false; pm.querySelector('.modal__box').scrollTop = 0;
       done.querySelector('.btn').focus();
     });
@@ -261,6 +278,7 @@
       });
       if (!ok) { lmsg.className = 'form-msg bad'; lmsg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
       lmsg.className = 'form-msg'; lmsg.textContent = '';
+      sendToWhatsApp('NBFC / Financing Partner', lf, [['name', 'Contact person'], ['company', 'NBFC / Company'], ['email', 'Email'], ['phone', 'Mobile'], ['city', 'City'], ['message', 'Message']]);
       lf.reset(); lf.hidden = true; ldone.hidden = false; lm.querySelector('.modal__box').scrollTop = 0;
       ldone.querySelector('.btn').focus();
     });
@@ -283,6 +301,14 @@
     tocBox.querySelector('summary').addEventListener('click', function (e) { if (!tocMq.matches) e.preventDefault(); });
   }
 
+  /* ---------- Tables: label each cell so rows can stack as cards on phones ---------- */
+  [].slice.call(document.querySelectorAll('.policy__table table')).forEach(function (t) {
+    var heads = [].slice.call(t.querySelectorAll('thead th')).map(function (h) { return h.textContent.trim(); });
+    [].slice.call(t.querySelectorAll('tbody tr')).forEach(function (tr) {
+      [].slice.call(tr.children).forEach(function (c, i) { if (c.tagName === 'TD') c.setAttribute('data-label', heads[i] || ''); });
+    });
+  });
+
   /* ---------- Reviews auto slider ---------- */
   var rs = document.querySelector('.reviews-slider');
   if (rs) {
@@ -297,10 +323,14 @@
       var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Show review ' + (i + 1));
       b.addEventListener('click', function () { go(i); restart(); }); dotsBox.appendChild(b); return b;
     });
+    // dots (and sliding) are only needed when there are more reviews than fit on screen
+    var needsSlider = function () { return n > perView(); };
+    var syncDots = function () { dotsBox.style.display = needsSlider() ? '' : 'none'; };
+    syncDots();
     var step = function () { var all = track.children; return all.length > 1 ? all[1].offsetLeft - all[0].offsetLeft : 0; };
     var render = function (jump) {
       track.classList.toggle('is-jump', !!jump);
-      track.style.transform = 'translateX(' + (-idx * step()) + 'px)';
+      track.style.transform = 'translateX(' + (needsSlider() ? -idx * step() : 0) + 'px)';
       dots.forEach(function (d, i) { d.setAttribute('aria-current', i === idx % n); });
     };
     var go = function (i) { idx = i; render(false); };
@@ -310,7 +340,7 @@
         setTimeout(function () { if (idx < n) return; idx = 0; render(true); void track.offsetWidth; track.classList.remove('is-jump'); }, 720);
       }
     };
-    var tick = function () { if (!paused && !document.hidden) next(); };
+    var tick = function () { if (needsSlider() && !paused && !document.hidden) next(); };
     var restart = function () { clearInterval(timer); if (!reduce) timer = setInterval(tick, 5000); };
     rs.addEventListener('mouseenter', function () { paused = true; });
     rs.addEventListener('mouseleave', function () { paused = false; });
@@ -318,6 +348,7 @@
     rs.addEventListener('focusout', function () { paused = false; });
     window.addEventListener('resize', function () {
       var p = perView(); if (p !== pp) { pp = p; rs.style.setProperty('--pp', p); }
+      syncDots(); if (!needsSlider()) idx = 0;
       render(true); void track.offsetWidth; track.classList.remove('is-jump');
     });
     // swipe
@@ -325,6 +356,7 @@
     rs.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') sx = e.clientX; });
     rs.addEventListener('pointerup', function (e) {
       if (sx === null) return; var d = e.clientX - sx; sx = null;
+      if (!needsSlider()) return;
       if (Math.abs(d) > 40) { go(d < 0 ? (idx + 1) % n : (idx - 1 + n) % n); restart(); }
     });
     render(true); void track.offsetWidth; track.classList.remove('is-jump');

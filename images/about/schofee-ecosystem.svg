@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" width="700" height="700" role="img" aria-label="Schofee platform connecting parents, institutions and lending partners, from eligibility check to fee settlement">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eaf8ff"/><stop offset="1" stop-color="#b9e2f7"/></linearGradient>
+    <linearGradient id="bl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ea3e0"/><stop offset="1" stop-color="#0d6aa3"/></linearGradient>
+    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd35c"/><stop offset="1" stop-color="#f0a500"/></linearGradient>
+    <filter id="sd" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0a4a78" flood-opacity=".2"/></filter>
+  </defs>
+  <rect width="700" height="700" fill="url(#bg)"/>
+  <circle cx="110" cy="120" r="120" fill="#fff" opacity=".35"/>
+  <circle cx="610" cy="610" r="160" fill="#fff" opacity=".3"/>
+  <circle cx="350" cy="320" r="252" fill="none" stroke="#1287c9" stroke-opacity=".28" stroke-width="2" stroke-dasharray="5 10"/>
+
+  <!-- connectors -->
+  <g stroke="#1287c9" stroke-width="3" stroke-dasharray="4 8" stroke-linecap="round" opacity=".7">
+    <path d="M150 300 H212"/><path d="M550 300 H488"/><path d="M350 178 V196"/>
+  </g>
+
+  <!-- platform card -->
+  <g filter="url(#sd)"><rect x="212" y="198" width="276" height="276" rx="24" fill="#fff"/></g>
+  <rect x="212" y="198" width="276" height="62" rx="24" fill="url(#bl)"/>
+  <rect x="212" y="236" width="276" height="24" fill="url(#bl)"/>
+  <text x="238" y="238" font-family="Sora,Arial,sans-serif" font-size="25" font-weight="700" fill="#fff">schofee</text>
+  <circle cx="458" cy="229" r="13" fill="#fff" opacity=".22"/><path d="M451 229 l5 5 l9 -10" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g font-family="Sora,Arial,sans-serif" font-size="16.5" font-weight="600" fill="#24465c">
+    <circle cx="246" cy="292" r="13" fill="#22b07d"/><path d="M240 292 l4 4 l8 -9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="270" y="298">Eligibility check</text>
+    <circle cx="246" cy="342" r="13" fill="#22b07d"/><path d="M240 342 l4 4 l8 -9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="270" y="348">Digital KYC</text>
+    <circle cx="246" cy="392" r="13" fill="#22b07d"/><path d="M240 392 l4 4 l8 -9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="270" y="398">Lender approval</text>
+    <circle cx="246" cy="442" r="13" fill="url(#gd)"/><text x="246" y="448" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#fff">₹</text>
+    <text x="270" y="448">Fee to institution</text>
+  </g>
+  <g stroke="#e3eff6" stroke-width="2"><path d="M232 317 H468"/><path d="M232 367 H468"/><path d="M232 417 H468"/></g>
+
+  <!-- lending partners (top) -->
+  <g filter="url(#sd)"><circle cx="350" cy="96" r="46" fill="#fff"/></g>
+  <path d="M322 92 L350 72 L378 92 Z" fill="#0d6aa3"/>
+  <rect x="326" y="94" width="48" height="5" fill="#0d6aa3"/>
+  <g fill="#1287c9"><rect x="330" y="101" width="7" height="18" rx="2"/><rect x="342" y="101" width="7" height="18" rx="2"/><rect x="354" y="101" width="7" height="18" rx="2"/><rect x="366" y="101" width="5" height="18" rx="2"/></g>
+  <rect x="322" y="120" width="56" height="6" rx="3" fill="#0d6aa3"/>
+  <g filter="url(#sd)"><rect x="272" y="148" width="156" height="30" rx="15" fill="#0d6aa3"/></g>
+  <text x="350" y="169" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="14.5" font-weight="700" fill="#fff">Lending Partners</text>
+
+  <!-- parents (left) -->
+  <g filter="url(#sd)"><circle cx="104" cy="300" r="46" fill="#fff"/></g>
+  <circle cx="93" cy="284" r="12" fill="#1287c9"/><path d="M73 322 c0 -16 9 -25 20 -25 s20 9 20 25 Z" fill="#1287c9"/>
+  <circle cx="121" cy="292" r="9" fill="#f5b301"/><path d="M106 322 c0 -12 7 -19 15 -19 s15 7 15 19 Z" fill="#f5b301"/>
+  <g filter="url(#sd)"><rect x="50" y="356" width="108" height="30" rx="15" fill="#0d6aa3"/></g>
+  <text x="104" y="377" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="14.5" font-weight="700" fill="#fff">Parents</text>
+
+  <!-- institutions (right) -->
+  <g filter="url(#sd)"><circle cx="596" cy="300" r="46" fill="#fff"/></g>
+  <path d="M568 298 L596 280 L624 298 Z" fill="#0d6aa3"/>
+  <rect x="574" y="298" width="44" height="24" fill="#cfe9f8"/>
+  <rect x="590" y="306" width="12" height="16" rx="2" fill="#1287c9"/>
+  <rect x="579" y="303" width="8" height="7" rx="1.5" fill="#1287c9"/><rect x="605" y="303" width="8" height="7" rx="1.5" fill="#1287c9"/>
+  <rect x="595" y="266" width="2.5" height="14" fill="#0a4f82"/><path d="M597.5 266 h12 l-3 4 l3 4 h-12 Z" fill="#f5b301"/>
+  <g filter="url(#sd)"><rect x="536" y="356" width="120" height="30" rx="15" fill="#0d6aa3"/></g>
+  <text x="596" y="377" text-anchor="middle" font-family="Sora,Arial,sans-serif" font-size="14.5" font-weight="700" fill="#fff">Institutions</text>
+
+  <!-- fee settled chip (top right: the page's "Digital & Secure" badge covers the lower half) -->
+  <g filter="url(#sd)"><rect x="450" y="138" width="164" height="52" rx="26" fill="#fff"/></g>
+  <circle cx="477" cy="164" r="16" fill="url(#gd)"/>
+  <text x="477" y="171" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#fff">₹</text>
+  <text x="502" y="160" font-family="Sora,Arial,sans-serif" font-size="14" font-weight="700" fill="#0a4f82">Fee settled</text>
+  <text x="502" y="177" font-family="Sora,Arial,sans-serif" font-size="12" font-weight="500" fill="#5b7a8c">Directly to school</text>
+</svg>
