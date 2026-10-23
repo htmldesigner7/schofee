@@ -374,6 +374,206 @@
     restart();
   }
 
+  /* ---------- Login / sign up (login.html) ---------- */
+  /* Set AUTH_API to the backend base URL to send real OTPs by SMS / email. It must accept JSON POSTs:
+       /send-otp   {purpose:'login'|'signup', mobile|email, firstName, lastName, consent}  -> {ok:true}
+       /verify-otp {same fields + otp}                                                  -> {ok:true, name:'...'}
+     A failed call may return {ok:false, message:'...'} to show that message.
+     While AUTH_API is empty the page runs in demo mode: no OTP is sent and DEMO_OTP is accepted. */
+  var AUTH_API = '';
+  var DEMO_OTP = '123456';
+  var USER_KEY = 'schofee_user';
+  var getUser = function () { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch (err) { return null; } };
+  var setUser = function (u) { try { if (u) localStorage.setItem(USER_KEY, JSON.stringify(u)); else localStorage.removeItem(USER_KEY); } catch (err) { /* storage blocked */ } };
+
+  // header button reads "My Account" once logged in
+  var hcta = document.querySelector('.header-cta');
+  var syncHeader = function () { if (hcta) hcta.textContent = getUser() ? 'My Account' : 'Login'; };
+  syncHeader();
+
+  var auth = document.getElementById('auth-card');
+  if (auth) {
+    var lgf = document.getElementById('login-form'), suf = document.getElementById('signup-form');
+    var otf = document.getElementById('otp-form'), adone = document.getElementById('auth-done');
+    var tabsBox = auth.querySelector('.auth__tabs'), atabs = [].slice.call(tabsBox.querySelectorAll('[role="tab"]'));
+    var boxes = [].slice.call(otf.querySelectorAll('.otp input')), resendBtn = otf.querySelector('[data-resend]');
+    var loginMode = 'mobile', pending = null, countdown = null;
+    var isMobile = function (v) { return /^[6-9]\d{9}$/.test(v); };
+    var isEmail = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); };
+
+    var callApi = function (path, data) {
+      if (!AUTH_API) {
+        return new Promise(function (res) {
+          setTimeout(function () { res(path === '/verify-otp' && data.otp !== DEMO_OTP ? { ok: false, message: 'Incorrect OTP. Please try again.' } : { ok: true }); }, 600);
+        });
+      }
+      return fetch(AUTH_API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(data) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j.ok = r.ok && j.ok !== false; return j; }); });
+    };
+
+    var show = function (panel) {
+      [lgf, suf, otf, adone].forEach(function (p) { p.hidden = p !== panel; });
+      tabsBox.hidden = panel === otf || panel === adone;
+    };
+    var setTab = function (t) {
+      atabs.forEach(function (o) { var on = o === t; o.setAttribute('aria-selected', on); o.tabIndex = on ? 0 : -1; });
+      show(document.getElementById(t.getAttribute('aria-controls')));
+    };
+    atabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { setTab(t); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        var o = atabs[(i + 1) % atabs.length]; setTab(o); o.focus(); e.preventDefault();
+      });
+    });
+
+    var fieldErr = function (el, msg) {
+      var box = el.closest('.auth__field');
+      box.classList.toggle('has-error', !!msg);
+      box.querySelector('.err').textContent = msg || '';
+      el.setAttribute('aria-invalid', !!msg);
+      return !msg;
+    };
+    var say = function (form, msg) { form.querySelector('.auth__msg').textContent = msg || ''; };
+    var busy = function (form, on) {
+      var b = form.querySelector('.auth__submit');
+      if (on) { b.setAttribute('data-label', b.innerHTML); b.textContent = 'Please wait…'; } else if (b.hasAttribute('data-label')) { b.innerHTML = b.getAttribute('data-label'); }
+      b.disabled = on;
+    };
+    [lgf, suf].forEach(function (f) {
+      f.addEventListener('input', function (e) { var box = e.target.closest('.auth__field'); if (box && box.classList.contains('has-error')) fieldErr(e.target, ''); say(f, ''); });
+    });
+
+    // existing user: switch between mobile and email
+    var modeBtn = lgf.querySelector('[data-switch-mode]');
+    modeBtn.addEventListener('click', function () {
+      loginMode = loginMode === 'mobile' ? 'email' : 'mobile';
+      [].slice.call(lgf.querySelectorAll('[data-mode]')).forEach(function (f) { f.hidden = f.getAttribute('data-mode') !== loginMode; });
+      modeBtn.textContent = loginMode === 'mobile' ? 'Login using email' : 'Login using mobile number';
+      say(lgf, ''); lgf.querySelector('[data-mode="' + loginMode + '"] input').focus();
+    });
+
+    var tickResend = function () {
+      var left = 30;
+      clearInterval(countdown);
+      resendBtn.disabled = true; resendBtn.textContent = 'Resend OTP in ' + left + 's';
+      countdown = setInterval(function () {
+        left -= 1;
+        if (left > 0) { resendBtn.textContent = 'Resend OTP in ' + left + 's'; return; }
+        clearInterval(countdown); resendBtn.disabled = false; resendBtn.textContent = 'Resend OTP';
+      }, 1000);
+    };
+    var clearOtp = function () { boxes.forEach(function (b) { b.value = ''; }); fieldErr(boxes[0], ''); say(otf, ''); };
+    var sendOtp = function (form, data) {
+      busy(form, true); say(form, '');
+      callApi('/send-otp', data).then(function (r) {
+        busy(form, false);
+        if (!r.ok) { say(form, r.message || 'We could not send the OTP. Please try again.'); return; }
+        pending = data;
+        otf.querySelector('[data-otp-to]').textContent = data.mobile ? '+91 ' + data.mobile : data.email;
+        otf.querySelector('.auth__demo').hidden = !!AUTH_API;
+        clearOtp(); show(otf); boxes[0].focus(); tickResend();
+      }, function () { busy(form, false); say(form, 'Network error. Please check your connection and try again.'); });
+    };
+
+    lgf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var el = lgf.querySelector('[data-mode="' + loginMode + '"] input'), v = el.value.trim();
+      var good = loginMode === 'mobile' ? fieldErr(el, isMobile(v) ? '' : 'Please enter a valid 10-digit mobile number.')
+                                       : fieldErr(el, isEmail(v) ? '' : 'Please enter a valid email address.');
+      if (!good) { el.focus(); return; }
+      var data = { purpose: 'login' }; data[loginMode] = v;
+      sendOtp(lgf, data);
+    });
+
+    suf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var g = function (id) { return document.getElementById(id); }, first = null;
+      [[g('su-first'), function (v) { return /^[A-Za-z][A-Za-z .'-]*$/.test(v) && v.length >= 2; }, 'Please enter your first name.'],
+       [g('su-last'), function (v) { return /^[A-Za-z][A-Za-z .'-]*$/.test(v); }, 'Please enter your last name.'],
+       [g('su-email'), isEmail, 'Please enter a valid email address.'],
+       [g('su-mobile'), isMobile, 'Please enter a valid 10-digit mobile number.']
+      ].forEach(function (r) { if (!fieldErr(r[0], r[1](r[0].value.trim()) ? '' : r[2]) && !first) first = r[0]; });
+      var consent = g('su-consent');
+      if (!fieldErr(consent, consent.checked ? '' : 'Please give your consent to continue.') && !first) first = consent;
+      if (first) { first.focus(); return; }
+      sendOtp(suf, { purpose: 'signup', firstName: g('su-first').value.trim(), lastName: g('su-last').value.trim(), email: g('su-email').value.trim(), mobile: g('su-mobile').value.trim(), consent: true });
+    });
+
+    // OTP boxes: one digit each, auto-advance, backspace goes back, paste fills all
+    boxes.forEach(function (b, i) {
+      b.addEventListener('input', function () {
+        var d = b.value.replace(/\D/g, '');
+        if (d.length > 1) { fill(d, i); return; }
+        b.value = d;
+        if (b.closest('.auth__field').classList.contains('has-error')) fieldErr(boxes[0], '');
+        if (d && boxes[i + 1]) boxes[i + 1].focus();
+        if (d && i === boxes.length - 1) submitOtp();
+      });
+      b.addEventListener('focus', function () { b.select(); });
+      b.addEventListener('keydown', function (e) {
+        if (e.key === 'Backspace' && !b.value && boxes[i - 1]) { boxes[i - 1].value = ''; boxes[i - 1].focus(); e.preventDefault(); }
+        if (e.key === 'ArrowLeft' && boxes[i - 1]) boxes[i - 1].focus();
+        if (e.key === 'ArrowRight' && boxes[i + 1]) boxes[i + 1].focus();
+      });
+      b.addEventListener('paste', function (e) {
+        var t = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+        if (t) { e.preventDefault(); fill(t, i); }
+      });
+    });
+    var fill = function (digits, from) {
+      digits.slice(0, boxes.length - from).split('').forEach(function (d, k) { boxes[from + k].value = d; });
+      var next = boxes[Math.min(from + digits.length, boxes.length - 1)]; next.focus();
+      if (boxes.every(function (b) { return b.value; })) submitOtp();
+    };
+    var submitOtp = function () { if (otf.requestSubmit) otf.requestSubmit(); else otf.dispatchEvent(new Event('submit', { cancelable: true })); };
+
+    otf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (otf.querySelector('.auth__submit').disabled) return;
+      var code = boxes.map(function (b) { return b.value; }).join('');
+      if (!/^\d{6}$/.test(code)) { fieldErr(boxes[0], 'Please enter the 6-digit OTP.'); boxes[0].focus(); return; }
+      var data = {}; for (var k in pending) data[k] = pending[k]; data.otp = code;
+      busy(otf, true); say(otf, '');
+      callApi('/verify-otp', data).then(function (r) {
+        busy(otf, false);
+        if (!r.ok) { clearOtp(); fieldErr(boxes[0], r.message || 'Incorrect OTP. Please try again.'); boxes[0].focus(); return; }
+        clearInterval(countdown);
+        setUser({ name: r.name || [pending.firstName, pending.lastName].join(' ').trim(), id: pending.mobile ? '+91 ' + pending.mobile : pending.email });
+        lgf.reset(); suf.reset(); syncHeader(); showDone();
+      }, function () { busy(otf, false); say(otf, 'Network error. Please check your connection and try again.'); });
+    });
+
+    resendBtn.addEventListener('click', function () {
+      resendBtn.disabled = true; say(otf, '');
+      callApi('/send-otp', pending).then(function (r) {
+        if (!r.ok) { resendBtn.disabled = false; say(otf, r.message || 'We could not resend the OTP. Please try again.'); return; }
+        clearOtp(); boxes[0].focus(); tickResend();
+      }, function () { resendBtn.disabled = false; say(otf, 'Network error. Please try again.'); });
+    });
+    [].slice.call(otf.querySelectorAll('[data-otp-back]')).forEach(function (b) {
+      b.addEventListener('click', function () {
+        clearInterval(countdown);
+        var t = atabs[pending && pending.purpose === 'signup' ? 1 : 0]; setTab(t);
+        document.getElementById(t.getAttribute('aria-controls')).querySelector('input').focus();
+      });
+    });
+
+    var showDone = function () {
+      var u = getUser() || {};
+      adone.querySelector('[data-user-name]').textContent = u.name ? 'Welcome, ' + u.name.split(' ')[0] + '!' : 'Welcome back!';
+      adone.querySelector('[data-user-id]').textContent = u.id || '';
+      show(adone);
+    };
+    adone.querySelector('[data-logout]').addEventListener('click', function () {
+      setUser(null); syncHeader(); setTab(atabs[0]);
+    });
+
+    // start: already logged in, or ?tab=signup / #signup opens New User
+    if (getUser()) showDone();
+    else if (/[?&]tab=signup\b/.test(location.search) || location.hash === '#signup') setTab(atabs[1]);
+  }
+
   /* ---------- Footer year ---------- */
   var y = document.getElementById('yr'); if (y) y.textContent = new Date().getFullYear();
 })();
