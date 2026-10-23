@@ -195,7 +195,7 @@
   <div class="container">
     <div class="section-head" data-reveal><span class="eyebrow">How Can We Help?</span><h2 id="aud-title">Choose What Describes You</h2></div>
     <div class="grid grid-3" style="margin-top:48px" data-stagger=".12">
-      <article class="card"><span class="feature__icon"><svg aria-hidden="true"><use href="#i-school"/></svg></span><h3>For Schools &amp; Institutions</h3><p class="q">Want to offer education fee financing to your students?</p><p>Partner with Schofee to explore financing models designed around your institution.</p><a href="?role=school#contact-form" class="btn btn--solid">Partner With Us <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
+      <article class="card"><span class="feature__icon"><svg aria-hidden="true"><use href="#i-school"/></svg></span><h3>For Schools &amp; Institutions</h3><p class="q">Want to offer education fee financing to your students?</p><p>Partner with Schofee to explore financing models designed around your institution.</p><a href="for-schools.html#partner-modal" class="btn btn--solid">Partner With Schofee <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
       <article class="card"><span class="feature__icon"><svg aria-hidden="true"><use href="#i-users"/></svg></span><h3>For Parents</h3><p class="q">Have questions about education fee financing or an existing application?</p><p>Our team can help guide you through the process.</p><a href="?role=parent#contact-form" class="btn btn--solid">Get Support <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
       <article class="card"><span class="feature__icon"><svg aria-hidden="true"><use href="#i-bank"/></svg></span><h3>For Lending Partners</h3><p class="q">Interested in expanding your education finance distribution?</p><p>Explore partnership opportunities with Schofee.</p><a href="#lender-modal" class="btn btn--solid" data-open-lender>Become a Lending Partner <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
     </div>
@@ -220,7 +220,7 @@
       <div class="fgrid">
         <div class="field"><label for="cf-name">Name <span class="req">*</span></label><input id="cf-name" name="name" type="text" autocomplete="name" required><span class="err" aria-live="polite"></span></div>
         <div class="field"><label for="cf-email">Email Address <span class="req">*</span></label><input id="cf-email" name="email" type="email" autocomplete="email" required><span class="err" aria-live="polite"></span></div>
-        <div class="field"><label for="cf-phone">Phone Number <span class="req">*</span></label><input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="cf-phone">Phone Number <span class="req">*</span></label><input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required><span class="err" aria-live="polite"></span></div>
         <div class="field"><label for="cf-city">City</label><input id="cf-city" name="city" type="text" autocomplete="address-level2"><span class="err"></span></div>
         <fieldset class="field field--full"><legend>I am a: <span class="req">*</span></legend>
           <div class="radios">
@@ -280,7 +280,7 @@
         <div class="field"><label for="lf-name">Contact Person Name <span class="req">*</span></label><input id="lf-name" name="name" type="text" autocomplete="name" required><span class="err" aria-live="polite"></span></div>
         <div class="field"><label for="lf-company">NBFC / Company Name <span class="req">*</span></label><input id="lf-company" name="company" type="text" autocomplete="organization" required><span class="err" aria-live="polite"></span></div>
         <div class="field"><label for="lf-email">Official Email Address <span class="req">*</span></label><input id="lf-email" name="email" type="email" autocomplete="email" required><span class="err" aria-live="polite"></span></div>
-        <div class="field"><label for="lf-phone">Mobile Number <span class="req">*</span></label><input id="lf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="lf-phone">Mobile Number <span class="req">*</span></label><input id="lf-phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required><span class="err" aria-live="polite"></span></div>
         <div class="field field--full"><label for="lf-city">City <span class="req">*</span></label><input id="lf-city" name="city" type="text" autocomplete="address-level2" required><span class="err" aria-live="polite"></span></div>
         <div class="field field--full"><label for="lf-message">Message (Optional)</label><textarea id="lf-message" name="message" style="min-height:96px"></textarea></div>
       </div>

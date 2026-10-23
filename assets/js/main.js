@@ -152,6 +152,16 @@
     });
   }
 
+  /* ---------- Forms: digits only in phone fields ---------- */
+  [].slice.call(document.querySelectorAll('form input[type="tel"]')).forEach(function (el) {
+    el.addEventListener('input', function () {
+      var v = el.value.replace(/\D/g, '');
+      // pasted with country code / trunk prefix (+91..., 0...): keep the 10-digit mobile number
+      v = (v.length > 10 && /^(91|0)/.test(v)) ? v.slice(-10) : v.slice(0, 10);
+      if (v !== el.value) el.value = v;
+    });
+  });
+
   /* ---------- Contact form ---------- */
   var cf = document.getElementById('contact-form');
   if (cf) {
@@ -174,7 +184,7 @@
       var rules = [
         ['cf-name', function (v) { return v.trim().length >= 2; }, 'Please enter your name.'],
         ['cf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
-        ['cf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid phone number.'],
+        ['cf-phone', function (v) { return /^\d{10}$/.test(v.trim()); }, 'Please enter a valid 10-digit mobile number.'],
         ['cf-institution', function (v) { return role !== 'School / Institution' || v.trim().length > 1; }, 'Please enter your institution name.'],
         ['cf-message', function (v) { return v.trim().length >= 10; }, 'Please tell us a little more (10+ characters).']
       ];
@@ -210,6 +220,7 @@
     [].slice.call(pm.querySelectorAll('[data-close-partner]')).forEach(function (b) { b.addEventListener('click', closePm); });
     pm.addEventListener('close', function () { document.body.classList.remove('modal-open'); });
     pm.addEventListener('click', function (e) { if (e.target === pm) closePm(); });
+    if (location.hash === '#partner-modal') openPm();
 
     var setErr = function (box, msg) {
       box.classList.toggle('has-error', !!msg);
@@ -222,7 +233,7 @@
       [['pf-name', function (v) { return v.trim().length >= 2; }, 'Please enter the contact person name.'],
        ['pf-institution', function (v) { return v.trim().length >= 2; }, 'Please enter your institution name.'],
        ['pf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
-       ['pf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid mobile number.'],
+       ['pf-phone', function (v) { return /^\d{10}$/.test(v.trim()); }, 'Please enter a valid 10-digit mobile number.'],
        ['pf-city', function (v) { return v.trim().length >= 2; }, 'Please enter your city.']
       ].forEach(function (r) {
         var el = document.getElementById(r[0]), good = r[1](el.value);
@@ -268,7 +279,7 @@
       [['lf-name', function (v) { return v.trim().length >= 2; }, 'Please enter the contact person name.'],
        ['lf-company', function (v) { return v.trim().length >= 2; }, 'Please enter your NBFC / company name.'],
        ['lf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
-       ['lf-phone', function (v) { return /^[+]?[\d\s-]{10,15}$/.test(v.trim()); }, 'Please enter a valid mobile number.'],
+       ['lf-phone', function (v) { return /^\d{10}$/.test(v.trim()); }, 'Please enter a valid 10-digit mobile number.'],
        ['lf-city', function (v) { return v.trim().length >= 2; }, 'Please enter your city.']
       ].forEach(function (r) {
         var el = document.getElementById(r[0]), good = r[1](el.value);
