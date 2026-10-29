@@ -165,45 +165,55 @@
   /* ---------- Contact form ---------- */
   var cf = document.getElementById('contact-form');
   if (cf) {
-    var inst = document.getElementById('cf-institution-field');
-    var syncInst = function () {
-      var v = (cf.querySelector('input[name="role"]:checked') || {}).value;
-      inst.querySelector('label .req').hidden = v !== 'School / Institution';
+    var rules = [
+      ['cf-name', function (v) { return v.trim().length >= 2; }, 'Please enter your name.'],
+      ['cf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
+      ['cf-phone', function (v) { return /^\d{10}$/.test(v.trim()); }, 'Please enter a valid 10-digit mobile number.'],
+      ['cf-message', function (v) { return v.trim().length >= 10; }, 'Please tell us a little more (10+ characters).']
+    ];
+    var check = function (rule) {
+      var el = document.getElementById(rule[0]), f = el.closest('.field'), err = f.querySelector('.err');
+      var good = rule[1](el.value);
+      f.classList.toggle('has-error', !good); err.textContent = good ? '' : rule[2];
+      el.setAttribute('aria-invalid', !good);
+      return good;
     };
-    [].slice.call(cf.querySelectorAll('input[name="role"]')).forEach(function (r) { r.addEventListener('change', syncInst); });
-    // pre-select role from URL (?role=school|parent|lender)
-    var q = (location.search.match(/role=(\w+)/) || [])[1];
-    var map = { school: 'School / Institution', parent: 'Parent', lender: 'Lending Partner' };
-    if (q && map[q]) { var r = cf.querySelector('input[value="' + map[q] + '"]'); if (r) r.checked = true; }
-    syncInst();
+    // re-validate as the user types, so an error clears once the value is valid
+    rules.forEach(function (rule) {
+      var el = document.getElementById(rule[0]);
+      el.addEventListener('input', function () {
+        if (el.closest('.field').classList.contains('has-error')) check(rule);
+        var m = cf.querySelector('.form-msg');
+        if (m.classList.contains('bad') && !cf.querySelector('.has-error')) { m.className = 'form-msg'; m.textContent = ''; }
+      });
+      el.addEventListener('blur', function () { if (el.value) check(rule); });
+    });
 
     cf.addEventListener('submit', function (e) {
       e.preventDefault();
       var ok = true, first = null, msg = cf.querySelector('.form-msg');
-      var role = (cf.querySelector('input[name="role"]:checked') || {}).value;
-      var rules = [
-        ['cf-name', function (v) { return v.trim().length >= 2; }, 'Please enter your name.'],
-        ['cf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
-        ['cf-phone', function (v) { return /^\d{10}$/.test(v.trim()); }, 'Please enter a valid 10-digit mobile number.'],
-        ['cf-institution', function (v) { return role !== 'School / Institution' || v.trim().length > 1; }, 'Please enter your institution name.'],
-        ['cf-message', function (v) { return v.trim().length >= 10; }, 'Please tell us a little more (10+ characters).']
-      ];
       rules.forEach(function (rule) {
-        var el = document.getElementById(rule[0]), f = el.closest('.field'), err = f.querySelector('.err');
-        var good = rule[1](el.value);
-        f.classList.toggle('has-error', !good); err.textContent = good ? '' : rule[2];
-        el.setAttribute('aria-invalid', !good);
-        if (!good) { ok = false; if (!first) first = el; }
+        if (!check(rule)) { ok = false; if (!first) first = document.getElementById(rule[0]); }
       });
-      var roleField = cf.querySelector('fieldset.field');
-      roleField.querySelector('.err').textContent = role ? '' : 'Please choose one option.';
-      if (!role) { ok = false; }
       if (!ok) { msg.className = 'form-msg bad'; msg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
-      msg.className = 'form-msg ok';
-      msg.textContent = 'Thank you! Your enquiry has been received. Our team will get in touch with you shortly.';
-      sendToWhatsApp('Contact Enquiry', cf, [['name', 'Name'], ['email', 'Email'], ['phone', 'Phone'], ['city', 'City'], ['role', 'I am a'], ['institution', 'Institution'], ['message', 'Message']]);
-      cf.reset(); syncInst();
+      msg.className = 'form-msg'; msg.textContent = '';
+      sendToWhatsApp('Contact Enquiry', cf, [['name', 'Name'], ['email', 'Email'], ['phone', 'Phone'], ['city', 'City'], ['institution', 'Institution'], ['message', 'Message']]);
+      cf.reset();
+      var tm = document.getElementById('contact-thanks');
+      if (tm && typeof tm.showModal === 'function') {
+        tm.showModal(); document.body.classList.add('modal-open');
+        tm.querySelector('.modal__done .btn').focus();
+      } else {
+        msg.className = 'form-msg ok';
+        msg.textContent = 'Thank you! Your enquiry has been received. Our team will get in touch with you shortly.';
+      }
     });
+    var ctm = document.getElementById('contact-thanks');
+    if (ctm) {
+      [].slice.call(ctm.querySelectorAll('[data-close-thanks]')).forEach(function (b) { b.addEventListener('click', function () { ctm.close(); }); });
+      ctm.addEventListener('close', function () { document.body.classList.remove('modal-open'); });
+      ctm.addEventListener('click', function (e) { if (e.target === ctm) ctm.close(); });
+    }
   }
 
   /* ---------- Partner modal (For Schools, Partnership Models) ---------- */
@@ -573,6 +583,55 @@
     if (getUser()) showDone();
     else if (/[?&]tab=signup\b/.test(location.search) || location.hash === '#signup') setTab(atabs[1]);
   }
+
+  /* ---------- Voices of Trust mosaic: 3D tilt + moving glare that follow the cursor ---------- */
+  if (!reduce && window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+    [].slice.call(document.querySelectorAll('.mosaic .mz')).forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--ry', ((x - .5) * 18).toFixed(1) + 'deg');
+        el.style.setProperty('--rx', ((.5 - y) * 18).toFixed(1) + 'deg');
+        el.style.setProperty('--px', ((.5 - x) * 14).toFixed(1) + 'px');
+        el.style.setProperty('--py', ((.5 - y) * 14).toFixed(1) + 'px');
+      });
+      el.addEventListener('mouseleave', function () {
+        ['--rx', '--ry', '--px', '--py'].forEach(function (p) { el.style.removeProperty(p); });
+      });
+    });
+  }
+
+  /* ---------- Partners auto slider (3 visible on desktop, 1 on mobile) ---------- */
+  [].slice.call(document.querySelectorAll('[data-partners-slider]')).forEach(function (box) {
+    var track = box.querySelector('.partners__track'), orig = [].slice.call(track.children), n = orig.length;
+    var idx = 0, timer = null;
+    var perView = function () { return window.innerWidth <= 820 ? 1 : 3; };
+    var go = function (animate) {
+      track.style.transition = animate ? '' : 'none';
+      track.style.transform = 'translateX(' + (-idx * orig[0].offsetWidth) + 'px)';
+    };
+    var build = function () {
+      [].slice.call(track.querySelectorAll('[data-clone]')).forEach(function (c) { track.removeChild(c); });
+      if (n <= perView()) return false;
+      for (var i = 0; i < perView(); i++) {
+        var c = orig[i].cloneNode(true);
+        c.setAttribute('data-clone', ''); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1;
+        track.appendChild(c);
+      }
+      idx = 0; go(false);
+      return true;
+    };
+    var next = function () {
+      if (document.hidden) return;
+      idx++; go(true);
+      if (idx >= n) setTimeout(function () { idx = 0; go(false); }, 650);
+    };
+    var start = function () {
+      clearInterval(timer);
+      if (build() && !reduce) timer = setInterval(next, 3000);
+    };
+    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(start, 200); });
+    start();
+  });
 
   /* ---------- Footer year ---------- */
   var y = document.getElementById('yr'); if (y) y.textContent = new Date().getFullYear();
