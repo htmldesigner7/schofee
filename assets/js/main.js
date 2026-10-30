@@ -23,7 +23,7 @@
   };
   var wa = document.createElement('a');
   wa.className = 'whatsapp-float';
-  wa.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hi schofee, I would like to know more about school fee financing.');
+  wa.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hi schofee, I would like to know more about institute fee financing.');
   wa.target = '_blank';
   wa.rel = 'noopener';
   wa.setAttribute('aria-label', 'Chat with schofee on WhatsApp');

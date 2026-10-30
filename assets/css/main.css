@@ -736,7 +736,7 @@ fieldset.field{border:0;padding:0;margin:0}
 .whatsapp-float svg{width:30px;height:30px;display:block}
 .whatsapp-float:hover{transform:scale(1.08);box-shadow:0 10px 24px rgba(0,0,0,.3)}
 @media (max-width:767px){.whatsapp-float{right:16px;bottom:16px;width:52px;height:52px}}
-/* ============ Challenges section (for-schools) ============ */
+/* ============ Challenges section (for-institutes) ============ */
 .challenges{position:relative;overflow:hidden;background:linear-gradient(180deg,#f3f9fd 0%,#fff 100%)}
 .challenges .section-head h2 em{font-style:normal;color:var(--blue)}
 .chal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(36px,4vw,56px)}
@@ -1032,7 +1032,7 @@ a.partner:hover{background:#f6fbff}
 .post-body .post-inline-cta .btn{flex:none;color:#fff;white-space:nowrap}
 @media(max-width:700px){.post-inline-cta{flex-direction:column;align-items:flex-start}}
 .post-body .policy__table table{min-width:0}
-.post-body .policy__table[aria-label*="Comparison of school fee"] table{min-width:760px}
+.post-body .policy__table[aria-label*="Comparison of institute fee"] table{min-width:760px}
 
 /* Blog article: single column on tablet/mobile (must come after the desktop overrides above) */
 @media(max-width:1020px){
