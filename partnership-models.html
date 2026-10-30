@@ -636,7 +636,7 @@
           <h2 id="lenders-title">Our Financing Partners</h2>
           <p>Trusted financial institutions that make education fee financing on Schofee possible.</p>
         </div>
-        <div class="partners partners--2" data-stagger=".12">
+        <div class="partners partners--1" data-stagger=".12">
           <a class="partner" href="https://armourcapital.co.in/" target="_blank" rel="noopener"
             aria-label="Armour Capital (opens in a new tab)">
             <span class="partner__logo"><img src="images/partners/armour-capital.svg" style="mix-blend-mode:multiply"
@@ -645,6 +645,7 @@
                 <use href="#i-arrow" />
               </svg></span>
           </a>
+          <!-- Satya Capital (hidden for now: remove the comment markers to show again, and change partners--1 back to partners--2)
           <a class="partner" href="https://www.satyacapital.co.in/" target="_blank" rel="noopener"
             aria-label="Satya Capital (opens in a new tab)">
             <span class="partner__logo"><img src="images/partners/Satya-Capital.png" width="1266" height="146"
@@ -653,6 +654,7 @@
                 <use href="#i-arrow" />
               </svg></span>
           </a>
+          -->
         </div>
       </div>
     </section>
@@ -809,7 +811,7 @@
               name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10"
               placeholder="10-digit mobile number" required><span class="err" aria-live="polite"></span></div>
           <div class="field field--full"><label for="pf-city">City <span class="req">*</span></label><input id="pf-city"
-              name="city" type="text" autocomplete="address-level2" required><span class="err"
+              name="city" type="text" data-city-select required><span class="err"
               aria-live="polite"></span></div>
           <fieldset class="field field--full" data-required>
             <legend>Number of Students <span class="req">*</span></legend>
@@ -847,7 +849,8 @@
     </div>
   </dialog>
 
-  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/cities.js" defer></script>
+<script src="assets/js/main.js" defer></script>
 </body>
 
 </html>

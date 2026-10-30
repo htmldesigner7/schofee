@@ -287,7 +287,7 @@
       e.preventDefault();
       var first = null, ok = true;
       [['lf-name', function (v) { return v.trim().length >= 2; }, 'Please enter the contact person name.'],
-       ['lf-company', function (v) { return v.trim().length >= 2; }, 'Please enter your NBFC / company name.'],
+       ['lf-company', function (v) { return v.trim().length >= 2; }, 'Please enter your NBFC / bank name.'],
        ['lf-email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }, 'Please enter a valid email address.'],
        ['lf-phone', function (v) { return /^\d{10}$/.test(v.trim()); }, 'Please enter a valid 10-digit mobile number.'],
        ['lf-city', function (v) { return v.trim().length >= 2; }, 'Please enter your city.']
@@ -299,7 +299,7 @@
       });
       if (!ok) { lmsg.className = 'form-msg bad'; lmsg.textContent = 'Please correct the highlighted fields.'; if (first) first.focus(); return; }
       lmsg.className = 'form-msg'; lmsg.textContent = '';
-      sendToWhatsApp('NBFC / Financing Partner', lf, [['name', 'Contact person'], ['company', 'NBFC / Company'], ['email', 'Email'], ['phone', 'Mobile'], ['city', 'City'], ['message', 'Message']]);
+      sendToWhatsApp('Lending Partner', lf, [['name', 'Contact person'], ['company', 'NBFC / Bank'], ['email', 'Email'], ['phone', 'Mobile'], ['city', 'City'], ['message', 'Message']]);
       lf.reset(); lf.hidden = true; ldone.hidden = false; lm.querySelector('.modal__box').scrollTop = 0;
       ldone.querySelector('.btn').focus();
     });

@@ -246,7 +246,7 @@
 
 <section class="section" aria-labelledby="help-title">
   <div class="container">
-    <div class="section-head" data-reveal><span class="eyebrow">How Schofee Helps Schools</span><h2 id="help-title">Five Ways Schofee Supports Your Institution</h2></div>
+    <div class="section-head" data-reveal><span class="eyebrow">Five Ways Schofee Supports Your Institution</span><h2 id="help-title">Five Ways Schofee Supports Your Institution</h2></div>
     <div class="benefits" style="margin-top:50px;max-width:1100px;margin-left:auto;margin-right:auto" data-stagger=".1"><article class="benefit"><span class="benefit__n">01</span><div><h3>Improve Admission Conversion</h3><p>Flexible financing options can help reduce affordability barriers for prospective parents.</p></div></article><article class="benefit"><span class="benefit__n">02</span><div><h3>Receive Fee Settlement Upfront</h3><p>Applicable approved financing can be settled directly with the institution, reducing dependence on multiple fee collection cycles.</p></div></article><article class="benefit"><span class="benefit__n">03</span><div><h3>Improve Cash Flow</h3><p>More predictable fee realization can support better financial planning.</p></div></article><article class="benefit"><span class="benefit__n">04</span><div><h3>Reduce Collection Effort</h3><p>Reduce manual follow-ups, payment tracking and collection-related administrative work.</p></div></article><article class="benefit"><span class="benefit__n">05</span><div><h3>Offer a Digital Parent Experience</h3><p>Parents can complete the financing journey digitally, including application, documentation and lender processing.</p></div></article></div>
   </div>
 </section>
@@ -264,7 +264,7 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="why-title">
+<!-- <section class="section" aria-labelledby="why-title">
   <div class="container">
     <div class="section-head" data-reveal><span class="eyebrow">Why Partner With Schofee?</span><h2 id="why-title">Everything Your Institution Needs</h2></div>
     <div class="strip-band" style="margin-top:44px" data-stagger=".1">
@@ -274,7 +274,7 @@
       <div><svg aria-hidden="true"><use href="#i-monitor"/></svg>Digital Fee Financing</div>
     </div>
   </div>
-</section>
+</section> -->
 <section class="section section--tint" aria-labelledby="qn-title">
   <div class="container qn" data-reveal>
     <div class="section-head"><span class="eyebrow">Quick Questionnaire</span><h2 id="qn-title">Tell Us About Your Institution</h2>
@@ -338,7 +338,7 @@
         <div class="field"><label for="pf-institution">Institution Name <span class="req">*</span></label><input id="pf-institution" name="institution" type="text" autocomplete="organization" required><span class="err" aria-live="polite"></span></div>
         <div class="field"><label for="pf-email">Official Email Address <span class="req">*</span></label><input id="pf-email" name="email" type="email" autocomplete="email" required><span class="err" aria-live="polite"></span></div>
         <div class="field"><label for="pf-phone">Mobile Number <span class="req">*</span></label><input id="pf-phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required><span class="err" aria-live="polite"></span></div>
-        <div class="field field--full"><label for="pf-city">City <span class="req">*</span></label><input id="pf-city" name="city" type="text" autocomplete="address-level2" required><span class="err" aria-live="polite"></span></div>
+        <div class="field field--full"><label for="pf-city">City <span class="req">*</span></label><input id="pf-city" name="city" type="text" data-city-select required><span class="err" aria-live="polite"></span></div>
         <fieldset class="field field--full" data-required><legend>Number of Students <span class="req">*</span></legend>
           <div class="radios">
             <label class="radio"><input type="radio" name="students" value="Below 50"><span>Below 50</span></label>
@@ -366,6 +366,7 @@
   </div>
 </dialog>
 
+<script src="assets/js/cities.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>
 </html>

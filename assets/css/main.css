@@ -838,6 +838,7 @@ body.modal-open{overflow:hidden}
 .partners-sec .section-head h2{font-size:clamp(26px,calc(40*var(--u) + 2px),42px)}
 .partners{display:grid;grid-template-columns:repeat(3,1fr);margin:40px auto 0;max-width:1100px;background:#fff;border:1px solid #dcebf4;border-radius:16px;box-shadow:0 10px 30px rgba(10,70,120,.06);overflow:hidden}
 .partners--2{grid-template-columns:repeat(2,1fr);max-width:760px}
+.partners--1{grid-template-columns:1fr;max-width:380px}
 .partner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:36px 28px 30px;position:relative;transition:background .3s}
 .partner + .partner{border-left:1px solid #e3eff6}
 .partners:not(.partners--2):not(.partners--slider) .partner:nth-child(3n+1){border-left:0}
@@ -1145,3 +1146,12 @@ a.partner:hover{background:#f6fbff}
   .auth__row{grid-template-columns:1fr}
   .otp{gap:6px}.otp input{height:48px;font-size:20px}
 }
+
+/* ============ City dropdown (searchable) ============ */
+.combo{position:relative}
+.combo input{padding-right:44px}
+.combo__chev{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);display:flex;cursor:pointer}
+.combo__list{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;margin:0;padding:6px;list-style:none;max-height:240px;overflow-y:auto;background:#fff;border:1px solid #cfe1ec;border-radius:10px;box-shadow:0 18px 40px rgba(10,60,100,.18)}
+.combo__list li{padding:10px 12px;border-radius:6px;font-size:15px;color:var(--ink);cursor:pointer}
+.combo__list li[aria-selected="true"],.combo__list li[role="option"]:hover{background:#e8f4fb;color:var(--blue)}
+.combo__list .combo__empty{color:var(--muted);cursor:default;font-size:14px}
